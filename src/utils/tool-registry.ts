@@ -1,0 +1,319 @@
+import type { Tool } from "@/types";
+
+// ============================================================
+//  myMiniHub — Tool Registry
+//  Registro central de todas as ferramentas do sistema.
+//  Cada ferramenta tem: id, nome, categoria, rota, tags, etc.
+// ============================================================
+
+export const TOOL_REGISTRY: Tool[] = [
+  // ─── FILES ────────────────────────────────────────────────
+  {
+    id: "merge-pdf",
+    name: "Juntar PDFs",
+    description: "Combine múltiplos arquivos PDF em um único documento",
+    category: "files",
+    icon: "FilePlus2",
+    route: "/files/merge-pdf",
+    tags: ["pdf", "juntar", "combinar", "documento", "merge"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "split-pdf",
+    name: "Dividir PDF",
+    description: "Separe páginas de um PDF em arquivos individuais",
+    category: "files",
+    icon: "Scissors",
+    route: "/files/split-pdf",
+    tags: ["pdf", "dividir", "separar", "split"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "image-to-pdf",
+    name: "Imagem para PDF",
+    description: "Converta imagens PNG/JPG em um arquivo PDF",
+    category: "files",
+    icon: "ImageDown",
+    route: "/files/image-to-pdf",
+    tags: ["pdf", "imagem", "converter", "png", "jpg"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "batch-rename",
+    name: "Renomeador em Lote",
+    description: "Renomeie múltiplos arquivos com padrões personalizados",
+    category: "files",
+    icon: "FilePen",
+    route: "/files/batch-rename",
+    tags: ["renomear", "lote", "arquivos", "rename", "batch"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "organize-files",
+    name: "Organizar por Extensão",
+    description: "Organize arquivos de uma pasta por tipo/extensão automaticamente",
+    category: "files",
+    icon: "FolderKanban",
+    route: "/files/organize",
+    tags: ["organizar", "extensão", "pasta", "arquivos"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: false,
+    badge: "soon",
+  },
+
+  // ─── IMAGES ───────────────────────────────────────────────
+  {
+    id: "convert-image",
+    name: "Converter Imagem",
+    description: "Converta imagens entre PNG, JPG, WebP e outros formatos",
+    category: "images",
+    icon: "ImageIcon",
+    route: "/images/convert",
+    tags: ["imagem", "converter", "png", "jpg", "webp", "formato"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "compress-image",
+    name: "Comprimir Imagem",
+    description: "Reduza o tamanho de imagens sem perder qualidade perceptível",
+    category: "images",
+    icon: "PackageOpen",
+    route: "/images/compress",
+    tags: ["imagem", "comprimir", "compactar", "tamanho", "otimizar"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "resize-image",
+    name: "Redimensionar Imagem",
+    description: "Redimensione imagens para dimensões ou porcentagem específica",
+    category: "images",
+    icon: "Maximize2",
+    route: "/images/resize",
+    tags: ["imagem", "redimensionar", "tamanho", "dimensão", "resize"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+
+  // ─── TEXT ─────────────────────────────────────────────────
+  {
+    id: "word-counter",
+    name: "Contador de Palavras",
+    description: "Conte palavras, caracteres, linhas e parágrafos de um texto",
+    category: "text",
+    icon: "AlignLeft",
+    route: "/text/word-counter",
+    tags: ["texto", "palavras", "contador", "caracteres", "linhas"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "case-converter",
+    name: "Conversor de Caso",
+    description: "Converta texto para MAIÚSCULAS, minúsculas, Title Case e mais",
+    category: "text",
+    icon: "CaseSensitive",
+    route: "/text/case-converter",
+    tags: ["texto", "maiúsculas", "minúsculas", "caso", "case"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "remove-spaces",
+    name: "Remover Espaços",
+    description: "Remova espaços extras, linhas em branco e limpe textos",
+    category: "text",
+    icon: "RemoveFormatting",
+    route: "/text/remove-spaces",
+    tags: ["texto", "espaços", "limpar", "formatar", "remover"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "quick-notes",
+    name: "Notas Rápidas",
+    description: "Crie e gerencie notas pessoais com busca e fixação",
+    category: "text",
+    icon: "NotebookPen",
+    route: "/text/notes",
+    tags: ["notas", "texto", "rápido", "anotação", "escrever"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+
+  // ─── DEV TOOLS ────────────────────────────────────────────
+  {
+    id: "json-formatter",
+    name: "Formatador JSON",
+    description: "Formate, valide e minifique JSON com highlight de sintaxe",
+    category: "devtools",
+    icon: "Braces",
+    route: "/devtools/json-formatter",
+    tags: ["json", "formatar", "validar", "dev", "código"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "base64",
+    name: "Base64 Encode/Decode",
+    description: "Codifique e decodifique texto e arquivos em Base64",
+    category: "devtools",
+    icon: "Binary",
+    route: "/devtools/base64",
+    tags: ["base64", "encode", "decode", "codificar", "dev"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "uuid-generator",
+    name: "Gerador de UUID",
+    description: "Gere UUIDs v1, v4 e v7 em lote com cópia rápida",
+    category: "devtools",
+    icon: "Fingerprint",
+    route: "/devtools/uuid",
+    tags: ["uuid", "guid", "gerar", "id", "dev"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "timestamp-converter",
+    name: "Conversor de Timestamp",
+    description: "Converta timestamps Unix para datas legíveis e vice-versa",
+    category: "devtools",
+    icon: "Timer",
+    route: "/devtools/timestamp",
+    tags: ["timestamp", "unix", "data", "hora", "converter", "dev"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "diff-checker",
+    name: "Diff Checker",
+    description: "Compare dois textos e visualize as diferenças lado a lado",
+    category: "devtools",
+    icon: "GitCompare",
+    route: "/devtools/diff",
+    tags: ["diff", "comparar", "diferença", "texto", "dev"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "hash-generator",
+    name: "Hash Generator",
+    description: "Gere hashes MD5, SHA-1, SHA-256 e SHA-512 de textos",
+    category: "devtools",
+    icon: "Hash",
+    route: "/devtools/hash",
+    tags: ["hash", "md5", "sha", "criptografia", "dev"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+    badge: "new",
+  },
+
+  // ─── PRODUCTIVITY ─────────────────────────────────────────
+  {
+    id: "pomodoro",
+    name: "Pomodoro",
+    description: "Timer Pomodoro com ciclos configuráveis e notificações",
+    category: "productivity",
+    icon: "Timer",
+    route: "/productivity/pomodoro",
+    tags: ["pomodoro", "timer", "foco", "produtividade", "tempo"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "checklist",
+    name: "Checklist Diário",
+    description: "Gerencie suas tarefas do dia com checklists simples",
+    category: "productivity",
+    icon: "ListTodo",
+    route: "/productivity/checklist",
+    tags: ["checklist", "tarefas", "lista", "produtividade", "dia"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "stopwatch",
+    name: "Cronômetro",
+    description: "Cronômetro simples com marcação de voltas",
+    category: "productivity",
+    icon: "Clock",
+    route: "/productivity/stopwatch",
+    tags: ["cronômetro", "tempo", "medir", "voltas"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+
+  // ─── SYSTEM ───────────────────────────────────────────────
+  {
+    id: "clipboard-history",
+    name: "Histórico do Clipboard",
+    description: "Veja e reutilize itens copiados anteriormente",
+    category: "system",
+    icon: "ClipboardList",
+    route: "/system/clipboard",
+    tags: ["clipboard", "histórico", "copiar", "colar", "área de transferência"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "password-generator",
+    name: "Gerador de Senhas",
+    description: "Gere senhas seguras com critérios configuráveis",
+    category: "system",
+    icon: "KeyRound",
+    route: "/system/password",
+    tags: ["senha", "password", "segurança", "gerar", "random"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+  },
+];
+
+// === Helpers ===
+export function getToolById(id: string): Tool | undefined {
+  return TOOL_REGISTRY.find((t) => t.id === id);
+}
+
+export function getToolsByCategory(category: string): Tool[] {
+  return TOOL_REGISTRY.filter((t) => t.category === category);
+}
+
+export function searchTools(query: string): Tool[] {
+  const q = query.toLowerCase().trim();
+  if (!q) return [];
+  return TOOL_REGISTRY.filter(
+    (t) =>
+      t.name.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.tags.some((tag) => tag.toLowerCase().includes(q))
+  );
+}
