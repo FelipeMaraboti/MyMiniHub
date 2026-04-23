@@ -1,8 +1,16 @@
 use tauri::{
     tray::{TrayIconBuilder, TrayIconEvent},
-    Manager, WebviewWindowBuilder,
+    Manager, WebviewWindowBuilder, State,
 };
 use tauri_plugin_positioner::{Position, WindowExt};
+use std::sync::Mutex;
+
+struct AppConfig {
+    position: String,
+    hide_on_blur: bool,
+}
+
+struct AppState(Mutex<AppConfig>);
 
 // ── Commands ────────────────────────────────────────────────
 
@@ -32,10 +40,27 @@ fn toggle_main_window(app: tauri::AppHandle) {
         if window.is_visible().unwrap_or(false) {
             let _ = window.hide();
         } else {
+            let state = app.state::<AppState>();
+            let pos_str = state.0.lock().unwrap().position.clone();
+            let pos = match pos_str.as_str() {
+                "topRight" => Position::TopRight,
+                "topLeft" => Position::TopLeft,
+                "bottomRight" => Position::BottomRight,
+                _ => Position::Center,
+            };
+            let _ = window.move_window(pos);
             let _ = window.show();
             let _ = window.set_focus();
         }
     }
+}
+
+#[tauri::command]
+fn update_config(app: tauri::AppHandle, position: String, hide_on_blur: bool) {
+    let state = app.state::<AppState>();
+    let mut config = state.0.lock().unwrap();
+    config.hide_on_blur = hide_on_blur;
+    config.position = position;
 }
 
 // ── Setup ────────────────────────────────────────────────────
@@ -56,8 +81,13 @@ pub fn run() {
             get_app_version,
             hide_main_window,
             toggle_main_window,
+            update_config,
         ])
         .setup(|app| {
+            app.manage(AppState(Mutex::new(AppConfig {
+                position: "center".to_string(),
+                hide_on_blur: true,
+            })));
             // ── Dev tools em debug ───────────────────────────
             #[cfg(debug_assertions)]
             {
@@ -81,8 +111,15 @@ pub fn run() {
                         if window.is_visible().unwrap_or(false) {
                             let _ = window.hide();
                         } else {
-                            // Posiciona no centro da tela ao invés de atrelado ao ícone (evita crash no Windows 11)
-                            let _ = window.move_window(Position::Center);
+                            let state = app.state::<AppState>();
+                            let pos_str = state.0.lock().unwrap().position.clone();
+                            let pos = match pos_str.as_str() {
+                                "topRight" => Position::TopRight,
+                                "topLeft" => Position::TopLeft,
+                                "bottomRight" => Position::BottomRight,
+                                _ => Position::Center,
+                            };
+                            let _ = window.move_window(pos);
                             let _ = window.show();
                             let _ = window.set_focus();
                         }
@@ -102,7 +139,15 @@ pub fn run() {
                             if window.is_visible().unwrap_or(false) {
                                 let _ = window.hide();
                             } else {
-                                let _ = window.move_window(Position::Center);
+                                let state = a.state::<AppState>();
+                                let pos_str = state.0.lock().unwrap().position.clone();
+                                let pos = match pos_str.as_str() {
+                                    "topRight" => Position::TopRight,
+                                    "topLeft" => Position::TopLeft,
+                                    "bottomRight" => Position::BottomRight,
+                                    _ => Position::Center,
+                                };
+                                let _ = window.move_window(pos);
                                 let _ = window.show();
                                 let _ = window.set_focus();
                             }
@@ -112,13 +157,13 @@ pub fn run() {
 
             Ok(())
         })
-        // ── Fecha popup ao perder foco real da janela ────────
-        // WindowEvent::Focused detecta blur da janela nativa,
-        // não do webview — não dispara durante drag.
         .on_window_event(|window, event| {
             if window.label() == "main" {
                 if let tauri::WindowEvent::Focused(false) = event {
-                    let _ = window.hide();
+                    let state = window.state::<AppState>();
+                    if state.0.lock().unwrap().hide_on_blur {
+                        let _ = window.hide();
+                    }
                 }
             }
         })

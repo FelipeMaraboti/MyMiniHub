@@ -9,55 +9,42 @@
    Tray App / Mac Style
    ============================================ */
 @layer base {
-  :root {
-    /* === Popup Background (glassmorphism) === */
-    --background: 228 15% 8%;
-    --foreground: 214 20% 92%;
+  /* === TEMA ESCURO (Padrão) - Cinza/Preto Puro === */
+  :root[data-theme="dark"], :root {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 92%;
 
-    /* === Surfaces === */
-    --surface: 228 15% 11%;
-    --surface-hover: 228 15% 14%;
-    --surface-active: 228 15% 17%;
+    --surface: 0 0% 11%;
+    --surface-hover: 0 0% 14%;
+    --surface-active: 0 0% 17%;
 
-    /* === Borders === */
-    --border: 228 15% 18%;
-    --border-subtle: 228 15% 14%;
-    --input: 228 15% 14%;
+    --border: 0 0% 18%;
+    --border-subtle: 0 0% 14%;
+    --input: 0 0% 14%;
     --ring: 199 89% 55%;
 
-    /* === Accent — Cyan === */
     --accent: 199 89% 55%;
-    --accent-foreground: 228 15% 8%;
+    --accent-foreground: 0 0% 8%;
     --accent-subtle: 199 89% 55%;
 
-    /* === Semantic === */
     --primary: 199 89% 55%;
-    --primary-foreground: 228 15% 8%;
-    --secondary: 228 15% 15%;
-    --secondary-foreground: 214 20% 85%;
-    --muted: 228 15% 13%;
-    --muted-foreground: 214 12% 48%;
+    --primary-foreground: 0 0% 8%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 85%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 48%;
     --destructive: 0 72% 58%;
     --destructive-foreground: 0 0% 98%;
     --success: 142 71% 45%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 55%;
-    --warning-foreground: 228 15% 8%;
+    --warning-foreground: 0 0% 8%;
 
-    /* === Cards & Popovers === */
-    --card: 228 15% 11%;
-    --card-foreground: 214 20% 92%;
-    --popover: 228 15% 10%;
-    --popover-foreground: 214 20% 92%;
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 92%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 92%;
 
-    /* === Sidebar (não usado no tray mode) === */
-    --sidebar: 228 15% 7%;
-    --sidebar-foreground: 214 12% 65%;
-    --sidebar-border: 228 15% 14%;
-    --sidebar-accent: 228 15% 13%;
-    --sidebar-accent-foreground: 214 20% 92%;
-
-    /* === Module Category Colors === */
     --module-files: 199 89% 55%;
     --module-images: 262 80% 65%;
     --module-text: 142 71% 45%;
@@ -65,14 +52,67 @@
     --module-productivity: 326 80% 62%;
     --module-system: 215 20% 60%;
 
-    /* === Radius === */
     --radius: 0.5rem;
 
-    /* === Popup specific === */
-    --popup-bg: rgba(14, 15, 20, 0.96);
+    --popup-bg: rgba(14, 15, 20, 0.98);
     --popup-border: rgba(255, 255, 255, 0.07);
     --popup-shadow: 0 32px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255,255,255,0.06);
     --popup-radius: 16px;
+    --popup-backdrop-blur: blur(24px) saturate(180%);
+  }
+
+  /* === TEMA ACRÍLICO (Glassmorphism Mac Style) === */
+  :root[data-theme="acrylic"] {
+    --background: 0 0% 5%;
+    --surface: 0 0% 10%;
+    --surface-hover: 0 0% 15%;
+    --surface-active: 0 0% 20%;
+    --popup-bg: rgba(10, 10, 10, 0.55);
+    --popup-border: rgba(255, 255, 255, 0.15);
+    --popup-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.1);
+    --popup-backdrop-blur: blur(48px) saturate(200%);
+  }
+
+  /* === TEMA LIGHT === */
+  :root[data-theme="light"] {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+
+    --surface: 0 0% 95%;
+    --surface-hover: 0 0% 92%;
+    --surface-active: 0 0% 88%;
+
+    --border: 0 0% 85%;
+    --border-subtle: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 199 89% 55%;
+
+    --accent: 199 89% 55%;
+    --accent-foreground: 0 0% 98%;
+    --accent-subtle: 199 89% 55%;
+
+    --primary: 199 89% 55%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 20%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 45%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 98%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --popup-bg: rgba(255, 255, 255, 0.96);
+    --popup-border: rgba(0, 0, 0, 0.08);
+    --popup-shadow: 0 16px 48px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0,0,0,0.04);
+    --popup-backdrop-blur: blur(24px) saturate(150%);
   }
 }
 
@@ -128,8 +168,8 @@
   /* === Popup shell glassmorphism === */
   .popup-shell {
     background: var(--popup-bg);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: var(--popup-backdrop-blur);
+    -webkit-backdrop-filter: var(--popup-backdrop-blur);
     border: 1px solid var(--popup-border);
     box-shadow: var(--popup-shadow);
     border-radius: var(--popup-radius);
