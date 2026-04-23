@@ -1,14 +1,71 @@
 import { useState } from "react";
 import { ToolSection, ToolButton, ToolSelect } from "@/components/ui/ToolComponents";
 import { UploadCloud, ImageIcon } from "lucide-react";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeFile } from "@tauri-apps/plugin-fs";
 
 export function ConvertImageTool() {
   const [file, setFile] = useState<File | null>(null);
   const [format, setFormat] = useState("image/webp");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
+    }
+  };
+
+  const handleConvert = async () => {
+    if (!file) return;
+    setIsProcessing(true);
+
+    try {
+      // 1. Carregar imagem
+      const imgUrl = URL.createObjectURL(file);
+      const img = new Image();
+      
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = imgUrl;
+      });
+
+      // 2. Desenhar no Canvas
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Canvas context não suportado");
+      ctx.drawImage(img, 0, 0);
+
+      // 3. Obter o blob no formato selecionado
+      const blob: Blob = await new Promise((resolve, reject) => {
+        canvas.toBlob((b) => {
+          if (b) resolve(b);
+          else reject(new Error("Falha ao gerar blob"));
+        }, format, 0.92); // Qualidade alta padrão
+      });
+
+      // 4. Salvar com Tauri
+      const ext = format.split("/")[1];
+      const savePath = await save({
+        filters: [{ name: "Imagem", extensions: [ext === "jpeg" ? "jpg" : ext] }],
+        defaultPath: `Imagem_Convertida.${ext === "jpeg" ? "jpg" : ext}`,
+      });
+
+      if (savePath) {
+        const buffer = await blob.arrayBuffer();
+        await writeFile(savePath, new Uint8Array(buffer));
+        alert("Imagem convertida e salva com sucesso!");
+        setFile(null);
+      }
+      
+      URL.revokeObjectURL(imgUrl);
+    } catch (error) {
+      console.error("Erro ao converter imagem", error);
+      alert("Ocorreu um erro ao converter a imagem.");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -32,9 +89,18 @@ export function ConvertImageTool() {
            </ToolSelect>
        </ToolSection>
 
-       <div className="mt-auto pt-4 flex justify-end">
-           <ToolButton variant="primary" disabled={!file} size="md" className="bg-[hsl(262,80%,65%)] hover:bg-[hsl(262,80%,65%)] text-white">
-               <ImageIcon size={16} /> Converter e Salvar
+       <div className="mt-auto pt-4 flex justify-between items-center border-t border-[rgba(255,255,255,0.06)]">
+           <span className="text-[11px] text-muted-foreground">
+               {file ? `Pronto para converter` : "Selecione uma imagem"}
+           </span>
+           <ToolButton 
+               variant="primary" 
+               disabled={!file || isProcessing} 
+               size="md" 
+               className="bg-[hsl(262,80%,65%)] hover:bg-[hsl(262,80%,65%)] text-white"
+               onClick={handleConvert}
+           >
+               <ImageIcon size={16} /> {isProcessing ? "Processando..." : "Converter e Salvar"}
            </ToolButton>
        </div>
     </div>

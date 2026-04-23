@@ -7,6 +7,8 @@ const Base64Tool            = lazy(() => import("@/modules/devtools/components/B
 const TimestampConverterTool= lazy(() => import("@/modules/devtools/components/TimestampConverterTool").then(m => ({ default: m.TimestampConverterTool })));
 const HashGeneratorTool     = lazy(() => import("@/modules/devtools/components/HashGeneratorTool").then(m => ({ default: m.HashGeneratorTool })));
 const DiffCheckerTool       = lazy(() => import("@/modules/devtools/components/DiffCheckerTool").then(m => ({ default: m.DiffCheckerTool })));
+const DocsBrTool            = lazy(() => import("@/modules/devtools/components/DocsBrTool").then(m => ({ default: m.DocsBrTool })));
+const ApiTesterTool         = lazy(() => import("@/modules/devtools/components/ApiTesterTool").then(m => ({ default: m.ApiTesterTool })));
 
 // ── Text Tools ────────────────────────────────────────────────
 const WordCounterTool  = lazy(() => import("@/modules/text/components/WordCounterTool").then(m => ({ default: m.WordCounterTool })));
@@ -22,6 +24,7 @@ const ChecklistTool  = lazy(() => import("@/modules/productivity/components/Chec
 // ── System ────────────────────────────────────────────────────
 const PasswordGeneratorTool = lazy(() => import("@/modules/system/components/PasswordGeneratorTool").then(m => ({ default: m.PasswordGeneratorTool })));
 const ClipboardHistoryTool  = lazy(() => import("@/modules/system/components/ClipboardHistoryTool").then(m => ({ default: m.ClipboardHistoryTool })));
+const SettingsTool          = lazy(() => import("@/modules/system/components/SettingsTool").then(m => ({ default: m.SettingsTool })));
 
 // ── Files / Images ────────────────────────────────────────────
 const MergePdfTool      = lazy(() => import("@/modules/files/components/MergePdfTool").then(m => ({ default: m.MergePdfTool })));
@@ -42,6 +45,8 @@ const TOOL_MAP: Record<string, React.LazyExoticComponent<React.FC>> = {
   "timestamp-converter":  TimestampConverterTool,
   "hash-generator":       HashGeneratorTool,
   "diff-checker":         DiffCheckerTool,
+  "docs-br":              DocsBrTool,
+  "api-tester":           ApiTesterTool,
   // Text
   "word-counter":         WordCounterTool,
   "case-converter":       CaseConverterTool,
@@ -54,6 +59,7 @@ const TOOL_MAP: Record<string, React.LazyExoticComponent<React.FC>> = {
   // System
   "password-generator":   PasswordGeneratorTool,
   "clipboard-history":    ClipboardHistoryTool,
+  "settings":             SettingsTool,
   // Files
   "merge-pdf":            MergePdfTool,
   "split-pdf":            SplitPdfTool,

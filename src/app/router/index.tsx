@@ -20,14 +20,8 @@ const router = createHashRouter([
     element: <AppLayout />,
     children: [
       { index: true, element: <DashboardPage /> },
+      { path: "/tool/:id", element: <ToolWindowShell /> },
     ],
-  },
-
-  // ── Janela secundária de ferramenta ─────────────
-  // Renderiza sem o AppLayout (sem popup-shell, sem hide-on-blur)
-  {
-    path: "/tool/:id",
-    element: <ToolWindowShell />,
   },
 ]);
 

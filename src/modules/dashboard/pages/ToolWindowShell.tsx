@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getToolById } from "@/utils/tool-registry";
-import { X } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import * as LucideIcons from "lucide-react";
 import { ToolContentRouter } from "@/modules/dashboard/components/ToolContentRouter";
 
@@ -15,17 +15,17 @@ const CATEGORY_ICON_BG: Record<string, string> = {
 };
 
 /**
- * ToolWindowShell — Shell para janelas de ferramentas secundárias.
- * Header fixo com ícone, nome e botão fechar.
- * Conteúdo delegado ao ToolContentRouter por tool.id.
+ * ToolWindowShell — Container da ferramenta dentro da janela principal.
+ * Header com botão "Voltar".
  */
 export function ToolWindowShell() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const tool = id ? getToolById(id) : null;
 
   if (!tool) {
     return (
-      <div className="flex items-center justify-center h-screen bg-background text-muted-foreground text-[13px]">
+      <div className="flex items-center justify-center h-full bg-background text-muted-foreground text-[13px]">
         Ferramenta não encontrada.
       </div>
     );
@@ -35,9 +35,17 @@ export function ToolWindowShell() {
   const iconBg = CATEGORY_ICON_BG[tool.category] ?? "bg-white/8 text-foreground";
 
   return (
-    <div className="flex flex-col h-screen bg-[hsl(228,15%,8%)] text-foreground">
+    <div className="flex flex-col h-full bg-[hsl(228,15%,8%)] text-foreground">
       {/* ── Header ── */}
-      <header className="drag-region flex items-center gap-3 px-5 py-3.5 border-b border-[rgba(255,255,255,0.07)] shrink-0">
+      <header className="drag-region flex items-center gap-3 px-4 py-3 border-b border-[rgba(255,255,255,0.07)] shrink-0">
+        <button
+          onClick={() => navigate("/")}
+          className="no-drag w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+          title="Voltar ao início"
+        >
+          <ArrowLeft size={16} strokeWidth={2} />
+        </button>
+
         <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${iconBg}`}>
           {IconComponent && <IconComponent size={15} strokeWidth={2} />}
         </div>
@@ -50,14 +58,6 @@ export function ToolWindowShell() {
             {tool.description}
           </p>
         </div>
-
-        <button
-          onClick={() => window.close()}
-          className="no-drag w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
-          title="Fechar"
-        >
-          <X size={14} strokeWidth={2} />
-        </button>
       </header>
 
       {/* ── Conteúdo da ferramenta ── */}

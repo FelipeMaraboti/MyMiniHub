@@ -232,6 +232,33 @@ export const TOOL_REGISTRY: Tool[] = [
     isAvailable: true,
     badge: "new",
   },
+  {
+    id: "docs-br",
+    name: "Documentos BR",
+    description: "Gere e valide CPFs e CNPJs reais matematicamente",
+    category: "devtools",
+    icon: "IdCard",
+    route: "/devtools/docs-br",
+    tags: ["cpf", "cnpj", "gerador", "validador", "documentos", "brasil"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+    badge: "new",
+  },
+
+  {
+    id: "api-tester",
+    name: "Testador de API",
+    description: "Faça requisições HTTP locais e remotas sem bloqueios de CORS",
+    category: "devtools",
+    icon: "Network",
+    route: "/devtools/api-tester",
+    tags: ["api", "http", "fetch", "postman", "rest", "request", "cors"],
+    favoriteable: true,
+    recentEnabled: true,
+    isAvailable: true,
+    badge: "new",
+  },
 
   // ─── PRODUCTIVITY ─────────────────────────────────────────
   {
@@ -294,6 +321,18 @@ export const TOOL_REGISTRY: Tool[] = [
     tags: ["senha", "password", "segurança", "gerar", "random"],
     favoriteable: true,
     recentEnabled: true,
+    isAvailable: true,
+  },
+  {
+    id: "settings",
+    name: "Configurações do App",
+    description: "Gerencie a inicialização e dados locais do myMiniHub",
+    category: "system",
+    icon: "Settings",
+    route: "/system/settings",
+    tags: ["configurações", "settings", "preferências", "sistema", "autostart", "limpar"],
+    favoriteable: false,
+    recentEnabled: false,
     isAvailable: true,
   },
 ];

@@ -1,7 +1,6 @@
 use tauri::{
-    Manager,
     tray::{TrayIconBuilder, TrayIconEvent},
-    WebviewWindowBuilder,
+    Manager, WebviewWindowBuilder,
 };
 use tauri_plugin_positioner::{Position, WindowExt};
 
@@ -17,36 +16,7 @@ fn get_app_version(app: tauri::AppHandle) -> String {
     app.package_info().version.to_string()
 }
 
-/// Abre uma janela secundária para uma ferramenta específica.
-#[tauri::command]
-fn open_tool_window(app: tauri::AppHandle, tool_id: String, tool_name: String) {
-    let label = format!("tool-{}", tool_id);
-
-    // Se já existe, foca nela
-    if let Some(window) = app.get_webview_window(&label) {
-        let _ = window.show();
-        let _ = window.set_focus();
-        return;
-    }
-
-    // Cria janela nova
-    let url = format!("/#/tool/{}", tool_id);
-    let _ = WebviewWindowBuilder::new(&app, &label, tauri::WebviewUrl::App(url.into()))
-        .title(tool_name)
-        .inner_size(900.0, 650.0)
-        .min_inner_size(700.0, 500.0)
-        .center()
-        .decorations(true)
-        .resizable(true)
-        .visible(true)
-        .build();
-
-    // Esconde o popup principal ao abrir tool
-    if let Some(main) = app.get_webview_window("main") {
-        let _ = main.hide();
-    }
-}
-
+// Removido open_tool_window pois a navegação agora é puramente nativa no React
 /// Esconde o popup principal (chamado pelo frontend ao perder foco).
 #[tauri::command]
 fn hide_main_window(app: tauri::AppHandle) {
@@ -73,6 +43,10 @@ fn toggle_main_window(app: tauri::AppHandle) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_autostart::Builder::new().build())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_sql::Builder::default().build())
         .plugin(tauri_plugin_positioner::init())
@@ -80,7 +54,6 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             ping,
             get_app_version,
-            open_tool_window,
             hide_main_window,
             toggle_main_window,
         ])
@@ -108,8 +81,8 @@ pub fn run() {
                         if window.is_visible().unwrap_or(false) {
                             let _ = window.hide();
                         } else {
-                            // Posiciona próximo ao ícone do tray
-                            let _ = window.move_window(Position::TrayCenter);
+                            // Posiciona no centro da tela ao invés de atrelado ao ícone (evita crash no Windows 11)
+                            let _ = window.move_window(Position::Center);
                             let _ = window.show();
                             let _ = window.set_focus();
                         }
@@ -121,20 +94,21 @@ pub fn run() {
             use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutState};
             let shortcut: Shortcut = "Ctrl+Shift+Space".parse().unwrap();
             let app_handle2 = app.handle().clone();
-            app.global_shortcut().on_shortcut(shortcut, move |_app, _shortcut, event| {
-                if event.state == ShortcutState::Pressed {
-                    let a = app_handle2.clone();
-                    if let Some(window) = a.get_webview_window("main") {
-                        if window.is_visible().unwrap_or(false) {
-                            let _ = window.hide();
-                        } else {
-                            let _ = window.move_window(Position::Center);
-                            let _ = window.show();
-                            let _ = window.set_focus();
+            app.global_shortcut()
+                .on_shortcut(shortcut, move |_app, _shortcut, event| {
+                    if event.state == ShortcutState::Pressed {
+                        let a = app_handle2.clone();
+                        if let Some(window) = a.get_webview_window("main") {
+                            if window.is_visible().unwrap_or(false) {
+                                let _ = window.hide();
+                            } else {
+                                let _ = window.move_window(Position::Center);
+                                let _ = window.show();
+                                let _ = window.set_focus();
+                            }
                         }
                     }
-                }
-            })?;
+                })?;
 
             Ok(())
         })

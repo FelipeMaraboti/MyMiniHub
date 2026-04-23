@@ -7,6 +7,8 @@ import { useToolsStore } from "@/app/store";
 import { openToolWindow } from "@/services/tauri/window";
 import type { Tool } from "@/types";
 
+import { useNavigate } from "react-router-dom";
+
 /**
  * DashboardPage — Tela principal do popup tray.
  * Estrutura Mac-style: SearchBar → CategoryTabs → ToolsList → Footer
@@ -14,11 +16,12 @@ import type { Tool } from "@/types";
 export function DashboardPage() {
   const [activeTab, setActiveTab] = useState<TabId>("all");
   const { addRecent } = useToolsStore();
+  const navigate = useNavigate();
 
   const handleSelectTool = async (tool: Tool) => {
     if (!tool.isAvailable) return;
     addRecent(tool.id);
-    await openToolWindow(tool);
+    navigate(`/tool/${tool.id}`);
   };
 
   return (
